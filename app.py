@@ -692,7 +692,7 @@ Rules:
     raw = re.sub(r'^```[a-z]*\n?', '', raw)
     raw = re.sub(r'\n?```$', '', raw)
 
-return json.loads(raw)
+    return json.loads(raw)
 
 
 def parse_circuit_to_graph(circuit_description: str, image_b64: str = None, image_type: str = None, model: str = "claude-sonnet-4-6") -> dict:
@@ -774,11 +774,13 @@ Return ONLY valid JSON (no markdown):
   "automation_score": 90
 }}"""
 
-    msg = client.messages.create(model=model, max_tokens=4000, messages=[{"role": "user", "content": prompt}])
-    raw = msg.content[0].text.strip()
-    raw = re.sub(r'^```[a-z]*\n?', '', raw)
-    raw = re.sub(r'\n?```$', '', raw)
-    return json.loads(raw)
+   raw = query_ollama(prompt)
+
+   raw = raw.strip()
+   raw = re.sub(r'^```[a-z]*\n?', '', raw)
+   raw = re.sub(r'\n?```$', '', raw)
+
+   return json.loads(raw)
 
 
 def optimize_circuit(graph_data: dict, analysis: dict, optimization_goal: str, model: str = "claude-sonnet-4-6") -> dict:
@@ -816,11 +818,13 @@ Return ONLY valid JSON:
   "additional_recommendations": ["tip1", "tip2"]
 }}"""
 
-    msg = client.messages.create(model=model, max_tokens=2500, messages=[{"role": "user", "content": prompt}])
-    raw = msg.content[0].text.strip()
-    raw = re.sub(r'^```[a-z]*\n?', '', raw)
-    raw = re.sub(r'\n?```$', '', raw)
-    return json.loads(raw)
+   raw = query_ollama(prompt)
+
+   raw = raw.strip()
+   raw = re.sub(r'^```[a-z]*\n?', '', raw)
+   raw = re.sub(r'\n?```$', '', raw)
+
+   return json.loads(raw)
 
 
 def generate_report(graph_data: dict, G: nx.Graph, analysis: dict, ngspice_output: str, optimization: dict = None) -> str:
