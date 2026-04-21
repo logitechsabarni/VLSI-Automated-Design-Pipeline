@@ -3,6 +3,4 @@ networkx
 matplotlib
 numpy
 pandas
-anthropic
-python-dotenv
-Pillow
+requests
