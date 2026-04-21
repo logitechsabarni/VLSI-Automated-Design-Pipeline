@@ -1743,8 +1743,7 @@ with st.sidebar:
     st.markdown('<div class="sec-header">// OLLAMA MODEL</div>', unsafe_allow_html=True)
     ollama_models = ["llama3", "llama3.1", "llama3.2", "mistral", "gemma2", "codellama", "phi3", "qwen2.5-coder"]
     selected_model_name = st.selectbox("Model", ollama_models, index=0, label_visibility="collapsed", key="ollama_model_selector")
-    global OLLAMA_MODEL
-    OLLAMA_MODEL = selected_model_name
+    st.session_state["OLLAMA_MODEL"] = selected_model_name
 
     st.divider()
 
