@@ -619,7 +619,7 @@ def retrieve_knowledge(circuit_type: str) -> str:
 # AI API CALLS
 # ══════════════════════════════════════════════════════════════════════════════
 def get_client() -> anthropic.Anthropic:
-    return anthropic.Anthropic()
+    return anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
 
 def _parse_circuit_to_graph_uncached(circuit_description: str, image_b64: str = None, image_type: str = None, model: str = "claude-sonnet-4-6") -> dict:
     """Simulation Agent: Parse circuit (text + optional image) into graph JSON."""
