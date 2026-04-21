@@ -29,7 +29,8 @@ from io import StringIO
 import numpy as np
 import pandas as pd
 import anthropic
-
+from dotenv import load_dotenv
+load_dotenv()
 # ══════════════════════════════════════════════════════════════════════════════
 # LOGGING SETUP
 # ══════════════════════════════════════════════════════════════════════════════
