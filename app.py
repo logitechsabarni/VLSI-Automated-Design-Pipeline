@@ -633,7 +633,7 @@ def query_ollama(prompt):
 
 def _parse_circuit_to_graph_uncached(circuit_description: str, image_b64: str = None, image_type: str = None, model: str = "claude-sonnet-4-6") -> dict:
     """Simulation Agent: Parse circuit (text + optional image) into graph JSON."""
-    client = get_client()
+    output = query_ollama(prompt)
     prompt = f"""You are the Simulation Agent in a VLSI automated design pipeline.
 Your task: parse the following circuit input into a precise graph representation for ngspice simulation.
 
@@ -686,11 +686,13 @@ Rules:
             {"type": "text", "text": prompt}
         ]
 
-    msg = client.messages.create(model=model, max_tokens=2500, messages=[{"role": "user", "content": content}])
-    raw = msg.content[0].text.strip()
+    raw = query_ollama(prompt)
+
+    raw = raw.strip()
     raw = re.sub(r'^```[a-z]*\n?', '', raw)
     raw = re.sub(r'\n?```$', '', raw)
-    return json.loads(raw)
+
+return json.loads(raw)
 
 
 def parse_circuit_to_graph(circuit_description: str, image_b64: str = None, image_type: str = None, model: str = "claude-sonnet-4-6") -> dict:
@@ -703,7 +705,7 @@ def parse_circuit_to_graph(circuit_description: str, image_b64: str = None, imag
 
 def analyze_circuit_graph(graph_data: dict, G: nx.Graph, rag_context: str = "", model: str = "claude-sonnet-4-6") -> dict:
     """Multi-role analysis: Simulation + Layout + Verification agents, with RAG context injection."""
-    client = get_client()
+    output = query_ollama(prompt)
     node_list = [f"{n['id']} ({n['type']})" for n in graph_data["nodes"]]
     edge_list = [
         f"{e['label']} {e['type']} ({e.get('value','?')}) : {e['source']} → {e['target']}"
