@@ -629,7 +629,7 @@ def query_ollama(prompt):
         return response.json()["response"]
     except Exception as e:
         return f"Error: {str(e)}"
-output = query_ollama(prompt)
+
 
 def _parse_circuit_to_graph_uncached(circuit_description: str, image_b64: str = None, image_type: str = None, model: str = "claude-sonnet-4-6") -> dict:
     """Simulation Agent: Parse circuit (text + optional image) into graph JSON."""
