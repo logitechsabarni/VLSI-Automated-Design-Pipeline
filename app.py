@@ -28,9 +28,7 @@ from io import StringIO
 
 import numpy as np
 import pandas as pd
-import anthropic
-from dotenv import load_dotenv
-load_dotenv()
+import requests
 # ══════════════════════════════════════════════════════════════════════════════
 # LOGGING SETUP
 # ══════════════════════════════════════════════════════════════════════════════
@@ -618,8 +616,20 @@ def retrieve_knowledge(circuit_type: str) -> str:
 # ══════════════════════════════════════════════════════════════════════════════
 # AI API CALLS
 # ══════════════════════════════════════════════════════════════════════════════
-def get_client() -> anthropic.Anthropic:
-    return anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
+def query_ollama(prompt):
+    try:
+        response = requests.post(
+            "http://localhost:11434/api/generate",
+            json={
+                "model": "llama3",
+                "prompt": prompt,
+                "stream": False
+            }
+        )
+        return response.json()["response"]
+    except Exception as e:
+        return f"Error: {str(e)}"
+output = query_ollama(prompt)
 
 def _parse_circuit_to_graph_uncached(circuit_description: str, image_b64: str = None, image_type: str = None, model: str = "claude-sonnet-4-6") -> dict:
     """Simulation Agent: Parse circuit (text + optional image) into graph JSON."""
